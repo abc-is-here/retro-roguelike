@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://kwourxqwn4jf"]
+
+[ext_resource type="AudioStream" uid="uid://dq5bl8uxh0au8" path="res://SFX/Coin.wav" id="1_2r2hs"]
+[ext_resource type="AudioStream" uid="uid://dtjp8tqf0w2fe" path="res://SFX/Heart.wav" id="2_o0vlu"]
+[ext_resource type="AudioStream" uid="uid://c0gxh8520hnly" path="res://SFX/Key.wav" id="3_2r2so"]
+[ext_resource type="AudioStream" uid="uid://bgi2anlpu7uwt" path="res://SFX/Next.wav" id="4_57y4c"]
+[ext_resource type="AudioStream" uid="uid://tws8w7k4gijy" path="res://SFX/Death.wav" id="5_jui0m"]
+[ext_resource type="AudioStream" uid="uid://d3u0x2kx1i2jt" path="res://SFX/8-bit-game-158815.mp3" id="6_mexmn"]
+
+[node name="sounds" type="Node"]
+
+[node name="coin" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_2r2hs")
+volume_db = 10.0
+
+[node name="heart" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_o0vlu")
+volume_db = 10.0
+
+[node name="Key" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2r2so")
+volume_db = 10.0
+
+[node name="door" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_57y4c")
+volume_db = 10.0
+
+[node name="death" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_jui0m")
+volume_db = 10.0
+
+[node name="bg" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_mexmn")
+volume_db = -20.0
+autoplay = true

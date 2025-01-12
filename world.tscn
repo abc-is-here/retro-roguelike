@@ -1,0 +1,275 @@
+[gd_scene load_steps=14 format=3 uid="uid://cyp75q41q48dq"]
+
+[ext_resource type="PackedScene" uid="uid://bdw7iirpk1x1y" path="res://room.tscn" id="1_is86c"]
+[ext_resource type="Texture2D" uid="uid://cxqw8jv0eqn1g" path="res://Spritesheet.png" id="1_t4kqk"]
+[ext_resource type="Script" path="res://player.gd" id="2_adfck"]
+[ext_resource type="Script" path="res://generate.gd" id="3_01dx5"]
+[ext_resource type="AudioStream" uid="uid://csn56fwj06n4g" path="res://SFX/walk.wav" id="4_c2syk"]
+[ext_resource type="Script" path="res://enemies.gd" id="5_0mbjn"]
+[ext_resource type="Script" path="res://ui.gd" id="6_0llh4"]
+[ext_resource type="FontFile" uid="uid://b8up5ptm5amsj" path="res://Kenney Pixel.ttf" id="8_fjsix"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1jit2"]
+size = Vector2(13, 14)
+
+[sub_resource type="Animation" id="Animation_y0quw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0.790593, 0.452316, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_mugu5"]
+resource_name = "player_flash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0.790593, 0.452316, 1), Color(1, 1, 1, 1), Color(0, 0.790593, 0.452316, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2ai7v"]
+_data = {
+"RESET": SubResource("Animation_y0quw"),
+"player_flash": SubResource("Animation_mugu5")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0ks0"]
+bg_color = Color(0.211765, 0, 0.0392157, 0.392157)
+
+[node name="world" type="Node2D"]
+
+[node name="Base" parent="." instance=ExtResource("1_is86c")]
+
+[node name="player" type="CharacterBody2D" parent="." groups=["player"]]
+position = Vector2(72, 72)
+scale = Vector2(3, 3)
+script = ExtResource("2_adfck")
+
+[node name="Sprite2D" type="Sprite2D" parent="player"]
+modulate = Color(0, 0.790593, 0.452316, 1)
+texture = ExtResource("1_t4kqk")
+region_enabled = true
+region_rect = Rect2(478, 35, 13, 14)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player"]
+modulate = Color(0.0235294, 1, 1, 1)
+position = Vector2(0.166664, 0)
+shape = SubResource("RectangleShape2D_1jit2")
+
+[node name="Camera2D" type="Camera2D" parent="player"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="player"]
+libraries = {
+"": SubResource("AnimationLibrary_2ai7v")
+}
+
+[node name="sound" type="AudioStreamPlayer2D" parent="player"]
+stream = ExtResource("4_c2syk")
+
+[node name="generate" type="Node" parent="."]
+script = ExtResource("3_01dx5")
+enemy_spawn_chance = 0.7
+coin_spawn_chance = 0.8
+heart_spawn_chance = 0.4
+max_enemies_in_room = 2
+max_coins_in_room = 3
+max_hearts_in_room = 1
+
+[node name="enemies" type="Node" parent="." groups=["Enemy_Manager"]]
+script = ExtResource("5_0mbjn")
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("6_0llh4")
+
+[node name="healthbar" type="Panel" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = -78.0
+offset_right = 245.0
+offset_bottom = -30.0
+grow_vertical = 0
+
+[node name="heart 1" type="Sprite2D" parent="UI/healthbar"]
+position = Vector2(28, 22)
+scale = Vector2(3, 3)
+texture = ExtResource("1_t4kqk")
+hframes = 3
+frame = 2
+region_enabled = true
+region_rect = Rect2(680, 169, 50, 17)
+
+[node name="heart 2" type="Sprite2D" parent="UI/healthbar"]
+position = Vector2(74, 22)
+scale = Vector2(3, 3)
+texture = ExtResource("1_t4kqk")
+hframes = 3
+frame = 2
+region_enabled = true
+region_rect = Rect2(680, 169, 50, 17)
+
+[node name="heart 3" type="Sprite2D" parent="UI/healthbar"]
+position = Vector2(122, 22)
+scale = Vector2(3, 3)
+texture = ExtResource("1_t4kqk")
+hframes = 3
+frame = 2
+region_enabled = true
+region_rect = Rect2(680, 169, 50, 17)
+
+[node name="heart 4" type="Sprite2D" parent="UI/healthbar"]
+position = Vector2(169, 22)
+scale = Vector2(3, 3)
+texture = ExtResource("1_t4kqk")
+hframes = 3
+frame = 2
+region_enabled = true
+region_rect = Rect2(680, 169, 50, 17)
+
+[node name="StatBar" type="Panel" parent="UI"]
+custom_minimum_size = Vector2(150, 48)
+offset_left = 46.0
+offset_top = 518.0
+offset_right = 196.0
+offset_bottom = 566.0
+
+[node name="coin" type="Sprite2D" parent="UI/StatBar"]
+position = Vector2(21, 25)
+scale = Vector2(3, 3)
+texture = ExtResource("1_t4kqk")
+region_enabled = true
+region_rect = Rect2(697, 51, 16, 16)
+
+[node name="coinLabel" type="Label" parent="UI/StatBar"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 14.0
+offset_right = 102.0
+offset_bottom = 37.0
+theme_override_fonts/font = ExtResource("8_fjsix")
+theme_override_font_sizes/font_size = 30
+text = "0"
+
+[node name="key" type="Sprite2D" parent="UI/StatBar"]
+modulate = Color(0.270284, 0.253243, 0.229865, 1)
+position = Vector2(125, 25)
+scale = Vector2(3, 3)
+texture = ExtResource("1_t4kqk")
+region_enabled = true
+region_rect = Rect2(544, 187, 16, 16)
+
+[node name="miniMap" type="Panel" parent="UI"]
+custom_minimum_size = Vector2(200, 200)
+offset_left = 921.0
+offset_top = 418.0
+offset_right = 1121.0
+offset_bottom = 618.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_k0ks0")
+
+[node name="GridContainer" type="GridContainer" parent="UI/miniMap"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 37.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 6
+
+[node name="Label" type="Label" parent="UI/miniMap"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -27.0
+offset_right = 27.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("8_fjsix")
+theme_override_font_sizes/font_size = 30
+text = "Level 1"
+
+[node name="pause_screen" type="Panel" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(500, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/pause_screen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -49.0
+offset_top = 71.0
+offset_right = 64.0
+offset_bottom = 110.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("8_fjsix")
+theme_override_font_sizes/font_size = 50
+text = "Paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/pause_screen"]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="ResumeButton" type="Button" parent="UI/pause_screen/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_fjsix")
+theme_override_font_sizes/font_size = 40
+text = "Resume"
+
+[node name="MainMenuButton" type="Button" parent="UI/pause_screen/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_fjsix")
+theme_override_font_sizes/font_size = 40
+text = "Exit to main menu"
+
+[connection signal="pressed" from="UI/pause_screen/VBoxContainer/ResumeButton" to="UI" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="UI/pause_screen/VBoxContainer/MainMenuButton" to="UI" method="_on_main_menu_button_pressed"]
